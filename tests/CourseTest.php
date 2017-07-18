@@ -6,6 +6,7 @@
     */
 
     require_once "src/Course.php";
+    require_once "src/Student.php";
 
     $server = 'mysql:host=localhost:8889;dbname=university_test';
     $username = 'root';
@@ -17,6 +18,7 @@
         protected function tearDown()
         {
             Course::deleteAll();
+            Student::deleteAll();
         }
         function testSave()
         {
@@ -105,6 +107,50 @@
             $result = Course::find($test_course->getId());
 
             $this->assertEquals($test_course, $result);
+        }
+
+        function testGetStudents()
+        {
+            $name = "Sociology";
+            $course_number = 234;
+            $test_course = new Course($name, $course_number);
+            $test_course->save();
+
+            $name2 = "Billy";
+            $start_date = "04-21-4243";
+            $test_student = new Student($name2, $start_date);
+            $test_student->save();
+
+            $name3 = "Johnny";
+            $start_date2 = "24-12-6213";
+            $test_student2 = new Student($name3, $start_date2);
+            $test_student2->save();
+
+            $test_course->addStudent($test_student);
+            $test_course->addStudent($test_student2);
+
+            $result = $test_course->getStudents();
+            $this->assertEquals([$test_student, $test_student2], $result);
+
+
+
+        }
+
+        function testAddStudent()
+        {
+            $name = "Math";
+            $course_number = 340;
+            $test_course = new Course($name, $course_number);
+            $test_course->save();
+
+            $name = "Donovan";
+            $start_date = "04-14-1992";
+            $test_student = new Student($name, $start_date);
+            $test_student->save();
+
+            $test_course->addStudent($test_student);
+
+            $this->assertEquals($test_course->getStudents(), [$test_student]);
         }
     }
 

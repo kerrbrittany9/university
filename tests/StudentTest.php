@@ -17,6 +17,7 @@
         protected function tearDown()
         {
             Student::deleteAll();
+            Course::deleteAll();
         }
         function testSave()
         {
@@ -120,6 +121,49 @@
 
             $this->assertEquals($new_name, $test_student->getName());
         }
+
+        function testGetCourses()
+        {
+            $name = "Ecology";
+            $course_number = 345;
+            $test_course = new Course($name, $course_number);
+            $test_course->save();
+
+            $name2= "Science";
+            $course_number2 = 123;
+            $test_course2 = new Course($name2, $course_number2);
+            $test_course2->save();
+
+
+            $name3 = "Sally";
+            $start_date = "09-09-1212";
+            $test_student = new Student($name3, $start_date);
+            $test_student->save();
+
+            $test_student->addCourse($test_course);
+            $test_student->addCourse($test_course2);
+
+            $this->assertEquals($test_student->getCourses(), [$test_course, $test_course2]);
+        }
+
+        function testAddCourse()
+        {
+            $name = "Computer Science";
+            $course_number = 234;
+            $test_course = new Course($name, $course_number);
+            $test_course->save();
+
+            $name2 = "Ryan";
+            $start_date = "12-23-1234";
+            $test_student = new Student($name, $start_date);
+            $test_student->save();
+
+            $test_student->addCourse($test_course);
+
+            $this->assertEquals($test_student->getCourses(), [$test_course]);
+
+        }
+
     }
 
  ?>

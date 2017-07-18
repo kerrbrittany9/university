@@ -97,6 +97,31 @@
             }
             return $found_course;
         }
+
+        function getStudents()
+        {
+            $returned_students = $GLOBALS['DB']->query("SELECT students.* FROM courses JOIN courses_students ON (courses_students.course_id = courses.id) JOIN students ON (students.id = courses_students.student_id) WHERE courses.id = {$this->getId()};");
+        
+            $students = array();
+            foreach($returned_students as $student) {
+                $name = $student['name'];
+                $start_date = $student['start_date'];
+                $id = $student['id'];
+                $new_student = new Student($name, $start_date, $id);
+                array_push($students, $new_student);
+            }
+        return $students;
+        }
+
+        function addStudent($student)
+        {
+            $executed = $GLOBALS['DB']->exec("INSERT INTO courses_students (course_id, student_id) VALUES ({$this->getId()}, {$student->getId()});");
+            if ($executed) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
 
