@@ -163,6 +163,24 @@
             $this->assertEquals($test_student->getCourses(), [$test_course]);
 
         }
+        function testDelete()
+        {
+            $name = "Biology";
+            $course_number = 100;
+            $test_course = new Course($name, $course_number);
+            $test_course->save();
+
+            $name2 = "Timothy";
+            $start_date = "06-06-0666";
+            $test_student = new Student($name, $start_date);
+            $test_student->save();
+
+            $test_course->addStudent($test_student);
+            $test_student->delete();
+
+            $this->assertEquals([], $test_course->getStudents());
+        }
+
 
     }
 

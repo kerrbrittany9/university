@@ -152,6 +152,23 @@
 
             $this->assertEquals($test_course->getStudents(), [$test_student]);
         }
+
+        function testDelete()
+        {
+            $name = "Anthro";
+            $course_number = 234;
+            $new_course = new Course($name, $course_number);
+            $new_course->save();
+
+            $name2 = "Anthony";
+            $course_number2 = 521;
+            $test_course = new Course($name2, $course_number2);
+            $test_course->save();
+
+            $test_course->delete();
+
+            $this->assertEquals([$new_course], Course::getAll());
+        }
     }
 
 

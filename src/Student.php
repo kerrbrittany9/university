@@ -118,5 +118,19 @@
             }
 
         }
+        function delete()
+        {
+            $executed = $GLOBALS['DB']->exec("DELETE FROM students WHERE id = {$this->getId()};");
+            if (!$executed) {
+                return false;
+            }
+            $executed = $GLOBALS['DB']->exec("DELETE FROM courses_students WHERE student_id = {$this->getId()};");
+            if (!$executed) {
+                return false;
+            } else {
+                return true;
+            }
+
+        }
     }
  ?>

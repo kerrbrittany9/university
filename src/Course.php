@@ -101,7 +101,7 @@
         function getStudents()
         {
             $returned_students = $GLOBALS['DB']->query("SELECT students.* FROM courses JOIN courses_students ON (courses_students.course_id = courses.id) JOIN students ON (students.id = courses_students.student_id) WHERE courses.id = {$this->getId()};");
-        
+
             $students = array();
             foreach($returned_students as $student) {
                 $name = $student['name'];
@@ -122,7 +122,19 @@
                 return false;
             }
         }
+
+        function delete()
+        {
+            $executed = $GLOBALS['DB']->exec("DELETE FROM courses WHERE id = {$this->getId()};");
+            if (!$executed) {
+                return false;
+            }
+            $executed = $GLOBALS['DB']->exec("DELETE FROM courses_students WHERE course_id = {$this->getId()};");
+            if (!$executed) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
-
-
  ?>
